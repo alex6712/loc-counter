@@ -58,11 +58,11 @@ jobs:
 
           if [ "${{ matrix.goos }}" = "windows" ]; then
             zip ${APP_NAME}_${VERSION}_${{ matrix.goos }}_${{ matrix.goarch }}.zip ${APP_NAME}.exe
+            rm -f ${APP_NAME}.exe
           else
             tar -czf ${APP_NAME}_${VERSION}_${{ matrix.goos }}_${{ matrix.goarch }}.tar.gz ${APP_NAME}
+            rm -f ${APP_NAME}
           fi
-
-          rm -f ${APP_NAME}*
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
