@@ -40,11 +40,11 @@ go build -o loc_counter .
 ./loc_counter --ext .go --ext .rs ./src
 
 # Исключить .py файлы
-./loc_counter --exclude .py ./src
+./loc_counter --ext-exclude .py ./src
 
-# --exclude имеет приоритет над --ext
+# --ext-exclude имеет приоритет над --ext
 # .py будет проигнорирован, даже если указан в --ext
-./loc_counter --ext .go --ext .py --exclude .py ./src
+./loc_counter --ext .go --ext .py --ext-exclude .py ./src
 ```
 
 ## Добавление нового языка

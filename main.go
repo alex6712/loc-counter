@@ -147,13 +147,13 @@ func isEntirelyComment(s string, cfg LangConfig) bool {
 	return false
 }
 
-// --- Вспомогательный тип флага StringSlice (позволяет использовать
+// --- Вспомогательный тип флага ExtStringSlice (позволяет использовать
 // --ext .go --ext .py  ИЛИ  --ext .go,.py) ---
 
-type stringSlice []string
+type extStringSlice []string
 
-func (s *stringSlice) String() string { return strings.Join(*s, ",") }
-func (s *stringSlice) Set(v string) error {
+func (s *extStringSlice) String() string { return strings.Join(*s, ",") }
+func (s *extStringSlice) Set(v string) error {
 	for _, part := range strings.Split(v, ",") {
 		part = strings.TrimSpace(part)
 		if part != "" {
@@ -170,12 +170,37 @@ func normalizeExt(ext string) string {
 	return ext
 }
 
-func main() {
-	var extFlag stringSlice
-	var excludeFlag stringSlice
+// --- Вспомогательный тип флага DirStringSlice (позволяет использовать
+// --exclude .foo/ --ext bar/  ИЛИ  --ext foo/,bar/) ---
 
+type dirStringSlice []string
+
+func (s *dirStringSlice) String() string { return strings.Join(*s, ",") }
+func (s *dirStringSlice) Set(v string) error {
+	for _, part := range strings.Split(v, ",") {
+		part = strings.TrimSpace(part)
+		if part != "" {
+			*s = append(*s, normalizeDir(part))
+		}
+	}
+	return nil
+}
+
+func normalizeDir(dir string) string {
+	if !strings.HasSuffix(dir, "/") {
+		return dir + "/"
+	}
+	return dir
+}
+
+func main() {
+	var excludeFlag dirStringSlice
+	var extFlag extStringSlice
+	var extExcludeFlag extStringSlice
+
+	flag.Var(&excludeFlag, "exclude", "Директории для исключения (например, --exclude .venv/).")
 	flag.Var(&extFlag, "ext", "Расширения для включения (например, --ext .go --ext .py). По умолчанию: все поддерживаемые.")
-	flag.Var(&excludeFlag, "exclude", "Расширения для исключения (например, --exclude .py). Имеет приоритет над --ext.")
+	flag.Var(&extExcludeFlag, "ext-exclude", "Расширения для исключения (например, --ext-exclude .py). Имеет приоритет над --ext.")
 	flag.Parse()
 
 	// Определяем директорию
@@ -190,18 +215,18 @@ func main() {
 		}
 	}
 
-	// Формируем набор исключений
-	excludeSet := make(map[string]bool)
-	for _, e := range excludeFlag {
-		excludeSet[e] = true
+	// Формируем набор исключений расширений
+	extExcludeSet := make(map[string]bool)
+	for _, e := range extExcludeFlag {
+		extExcludeSet[e] = true
 	}
 
-	// Формируем набор включений (nil означает «все поддерживаемые»)
-	var includeSet map[string]bool
+	// Формируем набор включений расширений (nil означает «все поддерживаемые»)
+	var extIncludeSet map[string]bool
 	if len(extFlag) > 0 {
-		includeSet = make(map[string]bool)
+		extIncludeSet = make(map[string]bool)
 		for _, e := range extFlag {
-			includeSet[e] = true
+			extIncludeSet[e] = true
 		}
 	}
 
@@ -231,10 +256,10 @@ func main() {
 		}
 
 		// Применяем фильтры
-		if excludeSet[ext] {
+		if extExcludeSet[ext] {
 			return nil
 		}
-		if includeSet != nil && !includeSet[ext] {
+		if extIncludeSet != nil && !extIncludeSet[ext] {
 			return nil
 		}
 
