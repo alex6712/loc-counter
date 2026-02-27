@@ -12,8 +12,8 @@
 Бинарные файлы для самых популярных платформ доступны на странице [Releases](https://github.com/alex6712/loc-counter/releases).
 Вы можете скачать подходящую версию и сразу начать использовать:
 
-- **Linux** (amd64, arm64)
-- **Windows** (amd64)
+- **Linux** ([amd64](https://github.com/alex6712/loc-counter/releases/download/v0.1.3/loc_counter_v0.1.3_linux_amd64.tar.gz), [arm64](https://github.com/alex6712/loc-counter/releases/download/v0.1.3/loc_counter_v0.1.3_linux_arm64.tar.gz))
+- **Windows** ([amd64](https://github.com/alex6712/loc-counter/releases/download/v0.1.3/loc_counter_v0.1.3_windows_amd64.zip))
 
 Просто распакуйте архив и запустите исполняемый файл из терминала / командной строки.
 
