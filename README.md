@@ -9,7 +9,7 @@
 
 ## Готовые сборки
 
-Бинарные файлы для самых популярных платформ доступны на странице [Releases](https://github.com/alex6712/loc-counter/releases).
+Исполняемые файлы для самых популярных платформ доступны на странице [Releases](https://github.com/alex6712/loc-counter/releases).
 Вы можете скачать подходящую версию и сразу начать использовать:
 
 - **Linux** ([amd64](https://github.com/alex6712/loc-counter/releases/download/v0.1.3/loc_counter_v0.1.3_linux_amd64.tar.gz), [arm64](https://github.com/alex6712/loc-counter/releases/download/v0.1.3/loc_counter_v0.1.3_linux_arm64.tar.gz))
@@ -56,7 +56,7 @@ go build -o loc_counter .
 
 # --ext-exclude имеет приоритет над --ext
 # .py будет проигнорирован, даже если указан в --ext
-./loc_counter --ext .go --ext .py --ext-exclude .py ./src
+./loc_counter --ext .go,.py --ext-exclude .py ./src
 ```
 
 ## Добавление нового языка
