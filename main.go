@@ -245,7 +245,24 @@ func main() {
 			fmt.Fprintf(os.Stderr, "предупреждение: невозможно получить доступ к %s: %v\n", path, err)
 			return nil
 		}
+
 		if d.IsDir() {
+			// Проверяем, нужно ли пропустить эту директорию
+			if len(excludeFlag) > 0 {
+				dirName := normalizeDir(filepath.Base(path))
+				relPath, relErr := filepath.Rel(dir, path)
+
+				for _, excluded := range excludeFlag {
+					excluded = strings.TrimSuffix(excluded, "/")
+					if dirName == normalizeDir(excluded) {
+						return filepath.SkipDir
+					}
+
+					if relErr == nil && (relPath == excluded || strings.HasPrefix(relPath+"/", excluded+"/")) {
+						return filepath.SkipDir
+					}
+				}
+			}
 			return nil
 		}
 

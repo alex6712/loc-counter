@@ -35,11 +35,19 @@
 
 Если вы хотите собрать утилиту самостоятельно:
 
+**Linux / macOS:**
 ```bash
 go build -o loc_counter .
 ```
 
+**Windows** (расширение `.exe` обязательно, иначе Go создаст файл без него):
+```powershell
+go build -o loc_counter.exe .
+```
+
 ## Использование
+
+> На Windows замените префикс `./loc_counter` на `.\loc_counter` или `.\loc_counter.exe`.
 
 ```bash
 # Подсчитать все поддерживаемые файлы в директории ./src
@@ -57,6 +65,13 @@ go build -o loc_counter .
 # --ext-exclude имеет приоритет над --ext
 # .py будет проигнорирован, даже если указан в --ext
 ./loc_counter --ext .go,.py --ext-exclude .py ./src
+
+# Исключить директории (через запятую или отдельными флагами)
+./loc_counter --exclude .venv,node_modules,.git ./src
+./loc_counter --exclude .venv --exclude node_modules ./src
+
+# Исключить конкретную вложенную директорию
+./loc_counter --exclude internal/generated ./src
 ```
 
 ## Добавление нового языка
