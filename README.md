@@ -47,7 +47,7 @@ go build -o loc_counter.exe .
 
 ## Использование
 
-> На Windows замените префикс `./loc_counter` на `.\loc_counter` или `.\loc_counter.exe`.
+> На Windows замените префикс `./loc_counter` на `.\loc_counter` или `loc_counter.exe`.
 
 ```bash
 # Подсчитать все поддерживаемые файлы в директории ./src
