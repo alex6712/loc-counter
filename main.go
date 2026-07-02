@@ -154,7 +154,7 @@ type extStringSlice []string
 
 func (s *extStringSlice) String() string { return strings.Join(*s, ",") }
 func (s *extStringSlice) Set(v string) error {
-	for _, part := range strings.Split(v, ",") {
+	for part := range strings.SplitSeq(v, ",") {
 		part = strings.TrimSpace(part)
 		if part != "" {
 			*s = append(*s, normalizeExt(part))
@@ -177,7 +177,7 @@ type dirStringSlice []string
 
 func (s *dirStringSlice) String() string { return strings.Join(*s, ",") }
 func (s *dirStringSlice) Set(v string) error {
-	for _, part := range strings.Split(v, ",") {
+	for part := range strings.SplitSeq(v, ",") {
 		part = strings.TrimSpace(part)
 		if part != "" {
 			*s = append(*s, normalizeDir(part))
