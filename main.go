@@ -247,23 +247,24 @@ func main() {
 		}
 
 		if d.IsDir() {
-			// Проверяем, нужно ли пропустить эту директорию
-			if len(excludeFlag) > 0 {
-				dirName := normalizeDir(filepath.Base(path))
-				relPath, relErr := filepath.Rel(dir, path)
+    		if len(excludeFlag) > 0 {
+        		relPath, relErr := filepath.Rel(dir, path)
+        		if relErr != nil {
+            		return nil
+        		}
 
-				for _, excluded := range excludeFlag {
-					excluded = strings.TrimSuffix(excluded, "/")
-					if dirName == normalizeDir(excluded) {
-						return filepath.SkipDir
-					}
+        		relPath = filepath.ToSlash(relPath)
 
-					if relErr == nil && (relPath == excluded || strings.HasPrefix(relPath+"/", excluded+"/")) {
-						return filepath.SkipDir
-					}
-				}
-			}
-			return nil
+        		for _, excluded := range excludeFlag {
+            		excluded = strings.TrimSuffix(excluded, "/")
+            		excluded = filepath.ToSlash(excluded)
+
+            		if relPath == excluded || strings.HasPrefix(relPath+"/", excluded+"/") {
+                		return filepath.SkipDir
+            		}
+        		}
+    		}
+    		return nil
 		}
 
 		ext := strings.ToLower(filepath.Ext(path))
