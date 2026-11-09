@@ -11,9 +11,9 @@ import (
 
 // LangConfig описывает синтаксис комментариев для языка.
 type LangConfig struct {
-	SingleLine []string // префиксы, обозначающие начало однострочного или inline-комментария
-	MultiStart string   // начало блочного комментария
-	MultiEnd   string   // конец блочного комментария
+    SingleLine []string 
+    MultiStart []string 
+    MultiEnd []string 
 }
 
 // knownLanguages сопоставляет расширение файла и конфигурацию языка.
@@ -43,8 +43,8 @@ var knownLanguages = map[string]LangConfig{
 	// используется # и тройные кавычки (обрабатываются как строки)
 	".py": {
     	SingleLine: []string{"#"},
-    	MultiStart: `"""`,
-    	MultiEnd:   `"""`,
+    	MultiStart: []string{`"""`, `'''`},
+    	MultiEnd:   []string{`"""`, `'''`},
 	},
 }
 
