@@ -42,9 +42,9 @@ var knownLanguages = map[string]LangConfig{
 	// Python — нет отдельного токена блочного комментария,
 	// используется # и тройные кавычки (обрабатываются как строки)
 	".py": {
-		SingleLine: []string{"#"},
-		MultiStart: `"""`,
-		MultiEnd:   `"""`,
+    	SingleLine: []string{"#"},
+    	MultiStart: `"""`,
+    	MultiEnd:   `"""`,
 	},
 }
 
